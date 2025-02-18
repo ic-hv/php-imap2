@@ -151,9 +151,8 @@ class Functions
         return $attributesValue;
     }
 
-    public static function isValidImap1Connection($imap)
-    {
-        return is_resource($imap) && get_resource_type($imap) == 'imap';
+    public static function isValidImap1Connection($imap) {
+	    return (is_resource($imap) && get_resource_type($imap) == 'imap') || is_a($imap, 'IMAP\Connection');
     }
 
     public static function isValidImap2Connection($imap)
@@ -191,8 +190,7 @@ class Functions
             && substr($backtrace[$depth + 1]['function'], 4) == substr($backtrace[$depth]['function'], 5);
     }
 
-    public static function isRetrofitResource($imap)
-    {
-        return is_resource($imap) && get_resource_type($imap) == 'imap';
+    public static function isRetrofitConnection($imap) {
+        return IMAP2_RETROFIT_MODE && self::isValidImap1Connection($imap);
     }
 }

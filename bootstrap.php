@@ -855,7 +855,7 @@ if (!function_exists('imap2_headerinfo')) {
     function imap2_headerinfo($imap, $messageNum, $fromLength = 0, $subjectLength = 0, $defaultHost = null)
     {
         if (Functions::isRetrofitConnection($imap)) {
-            return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
+            return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength);
         }
 
         return Message::headerInfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);

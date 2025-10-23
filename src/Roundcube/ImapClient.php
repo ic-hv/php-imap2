@@ -440,8 +440,10 @@ class ImapClient
      */
     protected function closeSocket()
     {
-        @fclose($this->fp);
-        $this->fp = null;
+		if ($this->fp !== null) {
+			@fclose($this->fp);
+			$this->fp = null;
+		}
     }
 
     /**

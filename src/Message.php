@@ -178,7 +178,7 @@ class Message
         #$client->setDebug(true);
 
         $isUid = boolval($flags & FT_UID);
-        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY['.$section.']']);
+        $messages = $client->fetch($imap->getMailboxName(), $messageNum, $isUid, ['BODY.PEEK['.$section.']']);
 
         if (empty($messages)) {
             trigger_error(Errors::badMessageNumber(debug_backtrace(), 1), E_USER_WARNING);
@@ -433,7 +433,7 @@ class Message
      * @param $flag
      * @param $options
      *
-     * @return bool|void
+     * @return bool
      */
     public static function setFlagFull($imap, $sequence, $flag, $options = 0)
     {
@@ -454,9 +454,7 @@ class Message
             $sequence = implode(',', $uid);
         }
 
-        $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
-
-        return false;
+        return $client->flag($imap->getMailboxName(), $sequence, strtoupper(substr($flag, 1)));
     }
 
     /**

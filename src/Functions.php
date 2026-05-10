@@ -192,5 +192,8 @@ class Functions
 
     public static function isRetrofitConnection($imap) {
         return IMAP2_RETROFIT_MODE && self::isValidImap1Connection($imap);
+    public static function isRetrofitResource($imap)
+    {
+        return  get_class($imap) == 'IMAP\Connection';
     }
 }

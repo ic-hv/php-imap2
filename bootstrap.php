@@ -856,6 +856,12 @@ if (!function_exists('imap2_headerinfo')) {
     {
         if (Functions::isRetrofitConnection($imap)) {
             return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength);
+        if (IMAP2_RETROFIT_MODE && is_resource($imap) && get_resource_type($imap) == 'imap') {
+            // PHP version === 8.0.*
+            if (PHP_VERSION_ID >= 80000) return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength);
+
+            // PHP version < 8.0.0
+            return imap_headerinfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
         }
 
         return Message::headerInfo($imap, $messageNum, $fromLength, $subjectLength, $defaultHost);
@@ -1613,3 +1619,14 @@ if (!function_exists('imap2_utf8')) {
         return imap_utf8($string);
     }
 }
+
+/* For testing
+// A side-effectless version (functions only) of Roundcube's bootstrap.php
+require __DIR__ . '/rcube_bootstrap.php';
+require __DIR__ . '/roundcubemail/program/lib/Roundcube/rcube.php';
+require __DIR__ . '/roundcubemail/program/lib/Roundcube/rcube_mime_decode.php';
+require __DIR__ . '/roundcubemail/program/lib/Roundcube/rcube_charset.php';
+require __DIR__ . '/roundcubemail/program/lib/Roundcube/rcube_string_replacer.php';
+require __DIR__ . '/roundcubemail/program/lib/Roundcube/rcube_imap_generic.php';
+require __DIR__ . '/roundcubemail/program/lib/Roundcube/rcube_result_index.php';
+*/

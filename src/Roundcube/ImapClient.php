@@ -336,6 +336,11 @@ class ImapClient
     {
         do {
             $line = trim($this->readLine(1024));
+
+			if (!strlen($line)) {
+				break;
+			}
+
             // store untagged response lines
             if ($line[0] == '*') {
                 $untagged[] = $line;
